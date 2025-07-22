@@ -1,8 +1,10 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import { loginSchema } from "../../../lib/zod";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import prisma from "@/lib/db";
+import { cookies } from "next/headers"; 
 
 
 export async function POST(request: NextRequest) {
@@ -58,7 +60,7 @@ export async function POST(request: NextRequest) {
             expiresIn : "1h"
         });
 
-        return NextResponse.json({
+        const response =  NextResponse.json({
             message : "Login successfully",
             data : {
                 token : token,
@@ -67,6 +69,17 @@ export async function POST(request: NextRequest) {
         } , {
             status : 200
         })
+
+        // set cookie 
+        response.cookies.set({
+            name: 'token',
+            value: token,
+            httpOnly: true,
+            path: '/',
+            maxAge: 60 * 60,
+        });
+
+        return response;
     }
     catch(error){
         console.error(error);

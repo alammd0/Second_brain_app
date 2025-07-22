@@ -18,29 +18,56 @@ model User {
   createdAt DateTime  @default(now())
 }
 
+// model Content {
+//   id          String   @id @default(cuid())
+//   title       String
+//   description String?
+//   userid      String
+//   Url         String
+//   contentType Type     @default(Document)
+//   tags        Tags[]   @relation("contentTags", references: [id])
+//   user        User     @relation(fields: [userid], references: [id])
+//   createdAt   DateTime @default(now())
+// }
+
+// model Tags {
+//   id        String    @id @default(cuid())
+//   name      String    @unique
+//   contentid String
+//   contents  Content[] @relation("contentTags")
+//   createdAt DateTime  @default(now())
+// }
+
 model Content {
   id          String   @id @default(cuid())
   title       String
-  description String
+  description String?
+  Url         String
+  contentType String
   userid      String
-  videoUrl    String?
-  tags        Tags[]
-  user        User     @relation(fields: [userid], references: [id])
+  tags        Tag[]    @relation("contentTags")
   createdAt   DateTime @default(now())
+  User        User?    @relation(fields: [userId], references: [id])
+  userId      String?
 }
 
-model Tags {
-  id        String  @id @default(cuid())
-  name      String  @unique
-  contentid String
-  content   Content @relation(fields: [contentid], references: [id])
-  createdAt DateTime @default(now())
+model Tag {
+  id       String    @id @default(cuid())
+  name     String  
+  contents Content[] @relation("contentTags")
 }
 
 model Link {
-  id        String  @id @default(cuid())
+  id        String   @id @default(cuid())
   hash      String
   contentid String
-  user      User    @relation(fields: [contentid], references: [id])
+  user      User     @relation(fields: [contentid], references: [id])
   createdAt DateTime @default(now())
+}
+
+enum Type {
+  Document
+  Twitter
+  Youtube
+  Instagram
 }

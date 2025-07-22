@@ -37,9 +37,16 @@ export async function POST(request: NextRequest) {
         });
 
         // if user found then send email to reset password
-        const resetURL = `http://localhost:3000/reset-password?token=${token}`;
+        const resetURL = `http://localhost:3000/api/reset-password?token=${token}`;
         const html = await generateResetPasswordHtml(existingEmail.name, resetURL);
         await sendEmail(existingEmail.email, "Password Reset Instructions", html);
+
+
+        return NextResponse.json({
+            message : "Email sent successfully"
+        }, {
+            status : 200
+        })
 
         
 

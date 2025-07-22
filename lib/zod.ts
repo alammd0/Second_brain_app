@@ -29,6 +29,22 @@ export const createUserSchema = z.object({
 });
 
 export const loginSchema = z.object({
-    email : z.string().email(),
-    password : z.string()
+  email: z.string().email(),
+  password: z.string(),
+});
+
+export const createContentSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  url: z.string(),
+  tags: z.array(z.string()),
+  contentType: z.enum(["Document", "Twitter", "Youtube", "Instagram"]),
+});
+
+export const updateContentSchema = z.object({
+  title: z.string().optional(),
+  description: z.string().optional(),
+  tags: z.array(z.string()).optional(),
+  url: z.string().optional(),
+  contentType: z.enum(["Document", "Twitter", "Youtube", "Instagram"]).optional(),
 });

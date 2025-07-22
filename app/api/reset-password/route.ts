@@ -28,10 +28,7 @@ export async function POST(req : NextRequest) {
 
         // check token 
         const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
-            id : string,
-            name : string,
-            username : string,
-            email : string
+            id : string
         }
 
         // hash password
