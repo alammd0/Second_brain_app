@@ -14,54 +14,38 @@ model User {
   email     String    @unique
   password  String
   content   Content[]
-  link      Link[]
+  links     Link[]
   createdAt DateTime  @default(now())
 }
-
-// model Content {
-//   id          String   @id @default(cuid())
-//   title       String
-//   description String?
-//   userid      String
-//   Url         String
-//   contentType Type     @default(Document)
-//   tags        Tags[]   @relation("contentTags", references: [id])
-//   user        User     @relation(fields: [userid], references: [id])
-//   createdAt   DateTime @default(now())
-// }
-
-// model Tags {
-//   id        String    @id @default(cuid())
-//   name      String    @unique
-//   contentid String
-//   contents  Content[] @relation("contentTags")
-//   createdAt DateTime  @default(now())
-// }
 
 model Content {
   id          String   @id @default(cuid())
   title       String
-  description String?
-  Url         String
-  contentType String
+  description String
   userid      String
-  tags        Tag[]    @relation("contentTags")
+  url         String
+  contentType Type     @default(Document)
+  tags        Tag[]
+  links       Link[]
+  user        User     @relation(fields: [userid], references: [id])
   createdAt   DateTime @default(now())
-  User        User?    @relation(fields: [userId], references: [id])
-  userId      String?
 }
 
 model Tag {
-  id       String    @id @default(cuid())
-  name     String  
-  contents Content[] @relation("contentTags")
+  id        String   @id @default(cuid())
+  name      String
+  contentId String
+  content   Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
 }
 
 model Link {
   id        String   @id @default(cuid())
-  hash      String
-  contentid String
-  user      User     @relation(fields: [contentid], references: [id])
+  hash      String   @unique
+  contentId String
+  userId    String?
+  content   Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 }
 
@@ -70,4 +54,5 @@ enum Type {
   Twitter
   Youtube
   Instagram
+  LinkedIn
 }

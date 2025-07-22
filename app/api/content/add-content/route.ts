@@ -8,6 +8,17 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const userId = await getUserId(req);
 
+    if (!userId) {
+      return NextResponse.json(
+        {
+          message: "Unauthorized",
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
     const data = createContentSchema.safeParse(body);
 
     if (!data.success) {
@@ -23,18 +34,7 @@ export async function POST(req: NextRequest) {
 
     const { title, description, tags, url, contentType } = data.data;
 
-    if (!userId) {
-      return NextResponse.json(
-        {
-          message: "Something went wrong, Server error",
-        },
-        {
-          status: 400,
-        }
-      );
-    }
-
-    // check user exiting or not given user id
+    // find user
     const existingUser = await prisma.user.findUnique({
       where: {
         id: userId,
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     if (!existingUser) {
       return NextResponse.json(
         {
-          message: "Something went wrong, Server error",
+          message: "User not found",
         },
         {
           status: 400,
@@ -52,44 +52,38 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // create content
+    // Now Create Content
     const newContent = await prisma.content.create({
       data: {
         title: title,
         description: description,
-        Url: url,
+        url: url,
         contentType: contentType,
         userid: userId,
       },
     });
 
-    // create tags and connect them to the content
-    await prisma.tag.createMany({
-      data: tags.map((tag) => ({
+    if (tags.length > 0) {
+      const tagsData = tags.map((tag) => ({
         name: tag,
-        contentid: newContent.id,
-      })),
-    });
+        contentId: newContent.id,
+      }));
 
-    // here find tags and contentTags relation with content
-    const contentTags = await prisma.tag.findMany({
-      where: {
-        id: newContent.id,
-      },
-    });
+      await prisma.tag.createMany({
+        data: tagsData,
+        skipDuplicates: true,
+      });
+    }
 
-    return NextResponse.json({
-      message: "Content created successfully",
-      data: {
-        id: newContent.id,
-        title: newContent.title,
-        description: newContent.description,
-        Url: newContent.Url,
-        contentType: newContent.contentType,
-        tags: contentTags.map((tag) => tag.name),
-        createdAt: newContent.createdAt,
+    return NextResponse.json(
+      {
+        message: "Content created successfully",
+        content: newContent,
       },
-    });
+      {
+        status: 200,
+      }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -97,7 +91,7 @@ export async function POST(req: NextRequest) {
         message: "Something went wrong, Server error",
       },
       {
-        status: 400,
+        status: 500,
       }
     );
   }
