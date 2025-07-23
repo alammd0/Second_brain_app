@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
 
 export const publicRoutes = [
   "/",
@@ -23,7 +22,6 @@ export function middleware(request: NextRequest) {
   }
 }
 
-// See "Matching Paths" below to learn more
 export const config = {
   matcher: ["/", "/login", "/signup", "/send-email", "/reset-password"],
 };
