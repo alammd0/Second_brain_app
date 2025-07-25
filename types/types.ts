@@ -1,17 +1,23 @@
-
 export type User = {
-    name : string,
-    username : string,
-    email : string,
-    password : string
-}
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+};
 
 export type LoginData = {
-    email : string,
-    password : string
-}
+  email: string;
+  password: string;
+};
 
 export type authProps = {
-    type : "login" | "signup"
-}
+  type: "login" | "signup";
+};
 
+export type Content = {
+  title: string;
+  description: string;
+  tags: string[];
+  url: string;
+  contentType: string;
+};

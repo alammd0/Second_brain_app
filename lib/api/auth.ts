@@ -1,5 +1,4 @@
 import { LoginData, User } from "@/types/types";
-import { toast } from "sonner";
 
 
 export const signup = async (data : User) => {

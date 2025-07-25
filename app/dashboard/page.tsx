@@ -6,6 +6,7 @@ export default function DashboardPage() {
         <div>
             <SideNavbar text="All Content" />
 
+            <Dashboard/>
         </div>
     )
 }

@@ -1,8 +1,25 @@
+"use client";
+
 import { Share } from "lucide-react";
+import { useState } from "react";
+import ContentModal from "./ContentModal";
 
 export default function SideNavbar({ text }: { text: string }) {
+
+
+  const [contentModal, setContentModal] = useState(false);
+
+  const handleContentModal = () => {
+    setContentModal(true);
+  }
+
+
+  const closeModal = () => {
+    setContentModal(false);
+  }
+
   return (
-    <div className="flex items-center justify-between gap-3 px-4 py-3 bg-gray-600 text-gray-100 transition rounded-lg font-OpenSans shadow-xl">
+    <div className=" relative flex items-center justify-between gap-3 px-4 py-3 bg-gray-600 text-gray-100 transition rounded-lg font-OpenSans shadow-xl">
       <div className="text-xl font-bold">{text}</div>
 
       <div className="flex items-center gap-3">
@@ -30,6 +47,7 @@ export default function SideNavbar({ text }: { text: string }) {
         </button>
 
         <button
+          onClick={handleContentModal}
           className="bg-gray-200 text-gray-700 px-4 py-2 rounded-xl text-[14px] font-bold cursor-pointer
             hover:bg-gray-500 transition duration-100 flex items-center gap-2"
         >
@@ -52,6 +70,15 @@ export default function SideNavbar({ text }: { text: string }) {
           <span>Add content</span>
         </button>
       </div>
+
+
+      {/* Content Modal */}
+      {
+        contentModal && (
+          <ContentModal closeModal={closeModal} />
+        )
+      }
+
     </div>
   );
 }

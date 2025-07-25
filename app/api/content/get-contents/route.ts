@@ -6,8 +6,6 @@ export async function GET(req: NextRequest) {
   try {
     const userId = await getUserId(req);
 
-    // console.log(userId);
-
     if (!userId) {
       return NextResponse.json(
         {
@@ -26,8 +24,6 @@ export async function GET(req: NextRequest) {
         userid: userId,
       },
     });
-
-    // console.log(content);
 
     return NextResponse.json(
       {
