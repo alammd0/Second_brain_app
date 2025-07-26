@@ -23,10 +23,10 @@ export default function TwitterEmbed({ url }: { url: string }) {
         strategy="lazyOnload"
       />
 
-      <blockquote className="twitter-tweet">
+      <blockquote className="twitter-tweet" data-theme="dark">
         <a href={fixedUrl}></a>
       </blockquote>
-
+      
     </>
   );
 }

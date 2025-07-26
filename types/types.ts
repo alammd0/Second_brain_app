@@ -17,7 +17,7 @@ export type authProps = {
 export type Content = {
   title: string;
   description: string;
-  tags: string[];
+  tags: String[];
   url: string;
   contentType: string;
 };

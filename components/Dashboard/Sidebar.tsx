@@ -1,17 +1,18 @@
 // components/Sidebar.tsx
 "use client";
 
-import { Home, X, Youtube, FileText, ExternalLink, Hash } from "lucide-react";
+
+import { Home, X, FileText, ExternalLink, Hash, Video } from "lucide-react";
 import Link from "next/link";
 import WebsiteIcons from "../icons/WebsiteIcons";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-const navItems = [
+const navItems  = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
   { name: "Tweets", href: "/dashboard/tweets", icon: X },
-  { name: "Videos", href: "/dashboard/videos", icon: Youtube },
+  { name: "Videos", href: "/dashboard/videos", icon : Video },
   { name: "Documents", href: "/dashboard/documents", icon: FileText },
   { name: "Links", href: "/dashboard/links", icon: ExternalLink },
   { name: "Tags", href: "/dashboard/tags", icon: Hash },
@@ -51,7 +52,7 @@ export default function Sidebar() {
                 className={`flex items-center gap-3 hover:bg-gray-700 hover:text-gray-300 px-5 py-2 text-gray-700 transition rounded-lg
                  ${isActive ? "bg-gray-700 text-white" : ""}`}
               >
-                <Icon className="w-5 h-5" />
+                <Icon className={`w-5 h-5 text-gray-700 ${isActive ? "text-white" : ""}`} />
                 <span>{name}</span>
               </Link>
             );

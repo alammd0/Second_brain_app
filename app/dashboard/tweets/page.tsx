@@ -1,9 +1,12 @@
+import CardWithContentType from "@/components/Dashboard/CardWithContentType";
 
 
 export default function Tweets(){
+
+
     return (
         <div>
-            Hello Tweets
+            <CardWithContentType contentType="Twitter" />
         </div>
     )
 }

@@ -23,6 +23,9 @@ export async function GET(req: NextRequest) {
       where: {
         userid: userId,
       },
+      include: {
+        tags: true,
+      },
     });
 
     return NextResponse.json(

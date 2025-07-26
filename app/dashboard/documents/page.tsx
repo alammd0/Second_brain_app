@@ -1,8 +1,9 @@
+import CardWithContentType from "@/components/Dashboard/CardWithContentType";
 
 export default function Documents(){
     return (
         <div>
-            Hello Documents
+           <CardWithContentType contentType="Document" />
         </div>
     )
 }

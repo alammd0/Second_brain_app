@@ -1,7 +1,9 @@
+"use client";
+
 import { CreateContent } from "@/lib/api/content";
 import { useState } from "react"
 import { toast } from "sonner";
-import { boolean } from "zod";
+import { useRouter } from "next/navigation";
 
 
 export default function ContentModal({ closeModal }: { closeModal: () => void }) {
@@ -21,6 +23,8 @@ export default function ContentModal({ closeModal }: { closeModal: () => void })
         })
     }
 
+    const router = useRouter();
+
     const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -31,6 +35,7 @@ export default function ContentModal({ closeModal }: { closeModal: () => void })
                 ? content.tags.split(",").map(tag => tag.trim())
                 : content.tags
             }; 
+            
             const response = await CreateContent(contentData);
             
             if(!response){
@@ -39,6 +44,7 @@ export default function ContentModal({ closeModal }: { closeModal: () => void })
             }
 
             toast.success(response.message);
+            router.push("/dashboard");
             closeModal();
         }
         catch(error){
@@ -86,7 +92,6 @@ export default function ContentModal({ closeModal }: { closeModal: () => void })
                             <option value="Document">Document</option>
                             <option value="Twitter">Twitter</option>
                             <option value="Youtube">Youtube</option>
-                            <option value="Instagram">Instagram</option>
                         </select>
                     </div>
 

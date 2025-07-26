@@ -1,9 +1,9 @@
-
+import CardWithContentType from "@/components/Dashboard/CardWithContentType";
 
 export default function Videos(){
     return (
         <div>
-            Hello Videos
+            <CardWithContentType contentType="Youtube" />
         </div>
     )
 }
