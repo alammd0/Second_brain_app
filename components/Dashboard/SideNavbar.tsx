@@ -1,6 +1,5 @@
 "use client";
 
-import { Share } from "lucide-react";
 import { useState } from "react";
 import ContentModal from "./ContentModal";
 

@@ -24,7 +24,7 @@ export default function Sidebar() {
   const pathName = usePathname();
 
   const logoutHandler = async () => {
-    const response =  await fetch("/api/auth/logout", {
+    await fetch("/api/auth/logout", {
       method: "POST",
     });
 

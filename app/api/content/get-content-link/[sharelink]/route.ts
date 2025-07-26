@@ -2,9 +2,9 @@ import prisma from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 
-export async function GET(req : NextRequest, { params }: { params: { sharelink: string } }) {
+export async function GET(req : NextRequest, context: { params: { sharelink: string } }) {
     try{
-        const { sharelink } = await params;
+        const { sharelink } = context.params;
         
         if(!sharelink){
             return NextResponse.json({
@@ -77,7 +77,8 @@ export async function GET(req : NextRequest, { params }: { params: { sharelink: 
     }
     catch(error){
         return NextResponse.json({
-            message : "Error occurred while getting content link"
+            message : "Error occurred while getting content link",
+            error : error
         }, {
             status : 50
         })

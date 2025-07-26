@@ -51,7 +51,8 @@ export async function POST(req : NextRequest) {
     }
     catch(error){
         return NextResponse.json({
-            message : "Error occurred while creating link"
+            message : "Error occurred while creating link",
+            error : error
         }, {
             status : 500
         })

@@ -4,6 +4,7 @@ import prisma from "@/lib/db"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcryptjs";
 
+
 export async function POST(req : NextRequest) {
     try{
         const body = await req.json();
@@ -52,7 +53,8 @@ export async function POST(req : NextRequest) {
     }
     catch(error){
         return NextResponse.json({
-            message : "Something went wrong, Server error"
+            message : "Something went wrong, Server error",
+            error : error
         }, {
             status : 400
         })

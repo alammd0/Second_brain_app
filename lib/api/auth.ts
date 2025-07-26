@@ -1,6 +1,5 @@
 import { LoginData, User } from "@/types/types";
 
-
 export const signup = async (data : User) => {
     const response = await fetch("/api/auth/signup", {
         method : "POST",
@@ -24,10 +23,10 @@ export const login = async (data : LoginData) => {
     return response.json();
 }
 
-export const sendResetPasswordEmail = async (email : string) => {
+// export const sendResetPasswordEmail = async (email : string) => {
 
-}
+// }
 
-export const resetPassword = async (token : string, newPassword : string) => {
+// export const resetPassword = async (token : string, newPassword : string) => {
 
-}
+// }
