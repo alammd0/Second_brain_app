@@ -21,3 +21,12 @@ export type Content = {
   url: string;
   contentType: string;
 };
+
+export interface ContentFetchResponse {
+    id : string;
+    title : string;
+    description : string;
+    url : string;
+    contentType : string;
+    tags : {name : string}[];
+}

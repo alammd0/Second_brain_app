@@ -1,15 +1,17 @@
 import { Content } from "@/types/types";
-import type { JSX } from 'react';
 
-export default function Card({ content, renderEmbed }: { content: Content, renderEmbed: (content: Content) => JSX.Element | undefined } ) {
-  console.log(content);
-  console.log(renderEmbed);
+export default function Card({ content, }: { content: Content }) {
+    
+  console.log(content)
+
+
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 mb-10">
       <div className="flex items-center justify-between">
         <p>{content.title}</p>
         <div>
-          <p>
+          <button>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -24,7 +26,7 @@ export default function Card({ content, renderEmbed }: { content: Content, rende
                 d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
               />
             </svg>
-          </p>
+          </button>
 
           <p>
             <svg

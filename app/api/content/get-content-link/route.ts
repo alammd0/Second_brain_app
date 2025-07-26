@@ -2,9 +2,12 @@ import prisma from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 
-export async function GET(req : NextRequest, context: { params: { sharelink: string } }) {
+export async function GET(req : NextRequest) {
     try{
-        const { sharelink } = context.params;
+
+        const { searchParams } = new URL(req.url);
+        const sharelink = searchParams.get("sharelink");
+
         
         if(!sharelink){
             return NextResponse.json({

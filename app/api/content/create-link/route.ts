@@ -20,7 +20,7 @@ export async function POST(req : NextRequest) {
         if(shareType === "Enable"){
 
             const hashLink = randomstring(10);
-
+            
             const createLink = await prisma.link.create({
                 data : {
                     hash : hashLink,

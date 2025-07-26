@@ -33,7 +33,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-64 h-screen bg-white border-r px-6 py-8 flex flex-col justify-between font-OpenSans">
+    <aside className="fixed top-0 left-0 w-64 h-screen bg-white border-r px-6 py-8 flex flex-col justify-between font-OpenSans z-50">
       <div>
         <div className="text-xl font-bold flex items-center gap-2 mb-10">
           <span className=" cursor-pointer">

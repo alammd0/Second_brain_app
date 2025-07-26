@@ -24,3 +24,25 @@ export const GetContents = async () => {
 
     return response.json();
 }
+
+
+export const CreateLink = async (contentId : string, shareType : "Enable" | "Disable" | undefined) => {
+    const data = {
+        contentId : contentId,
+        shareType : shareType
+    }
+    
+    const response = await fetch("/api/content/create-link", {
+        method : "POST",
+        headers : {
+            "Content-Type" : "application/json"
+        },
+        body : JSON.stringify(data)
+    });
+    return response.json();
+}
+
+export const GetShareLink = async (sharelink : string | undefined) => {
+    const response = await fetch(`/api/content/get-content-link?sharelink=${sharelink}`);
+    return response.json();
+}

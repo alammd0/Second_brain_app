@@ -1,7 +1,7 @@
 "use client";
 
-import { GetContents } from "@/lib/api/content";
-import { Content } from "@/types/types";
+import { CreateLink, GetContents } from "@/lib/api/content";
+import { ContentFetchResponse } from "@/types/types";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import TwitterEmbed from "./TwitterEmbed";
@@ -13,7 +13,9 @@ export default function CardWithContentType({
 }: {
   contentType: string;
 }) {
-  const [contents, setContents] = useState<Content[]>([]);
+  const [contents, setContents] = useState<ContentFetchResponse[]>([]);
+  const [shareLinks, setShareLinks] = useState<Record<string, string>>({});
+  const [loadingShare, setLoadingShare] = useState<Record<string, boolean>>({});
 
   const fetchContents = async () => {
     try {
@@ -34,7 +36,7 @@ export default function CardWithContentType({
     fetchContents();
   }, []);
 
-  const renderEmbed = (content: Content) => {
+  const renderEmbed = (content: ContentFetchResponse) => {
     switch (content.contentType) {
       case "Twitter":
         return <TwitterEmbed url={content.url} />;
@@ -53,14 +55,39 @@ export default function CardWithContentType({
     }
   };
 
+  const handleShare = async (contentId: string) => {
+    setLoadingShare((prev) => ({ ...prev, [contentId]: true }));
+    try {
+      const res = await CreateLink(contentId, "Enable");
+      console.log(res);
+
+      if (res.hash) {
+        const shareUrl = `${window.location.origin}/share/${res.hash}`;
+        setShareLinks((prev) => ({ ...prev, [contentId]: shareUrl }));
+        toast.success("Share link created!");
+      } else {
+        toast.error(res.message || "Failed to create link");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while sharing");
+    } finally {
+      setLoadingShare((prev) => ({ ...prev, [contentId]: false }));
+    }
+  };
+
+
   if (contents.length === 0) {
-    return <div className="text-center text-2xl font-OpenSans">No {contentType} content found</div>;
+    return (
+      <div className="text-center text-2xl font-OpenSans">
+        No {contentType} content found
+      </div>
+    );
   }
 
   return (
     <div className="flex flex-col gap-2">
       <div className="space-y-4">
-
         <SideNavbar text={contentType + " Content"} />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
@@ -75,7 +102,7 @@ export default function CardWithContentType({
                   <p>{content.title}</p>
 
                   <div className="flex gap-2">
-                    <p>
+                    <button onClick={() => handleShare((content).id)}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -90,7 +117,21 @@ export default function CardWithContentType({
                           d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
                         />
                       </svg>
-                    </p>
+                    </button>
+
+                    
+                    {shareLinks[content.id] && (
+                        <div className="mt-2 bg-gray-100 p-2 rounded text-sm">
+                            <p className="text-green-700 break-all">{shareLinks[content.id]}</p>
+                            <button
+                            onClick={() => navigator.clipboard.writeText(shareLinks[content.id])}
+                            className="text-blue-500 underline text-xs mt-1"
+                            >
+                            Copy Link
+                            </button>
+                        </div>
+                     )}
+
 
                     <p>
                       <svg
@@ -115,6 +156,18 @@ export default function CardWithContentType({
 
                 <div>
                   <p>{content.description}</p>
+                </div>
+
+                <div className="flex gap-2">
+                    {
+                        content.tags.map((tag, index) => {
+                            return (
+                                <div key={index} className="bg-gray-100 p-2 rounded-xl text-sm">
+                                    <p className="text-green-700 break-all">#{tag.name} </p>
+                                </div>
+                            )
+                        })
+                    }
                 </div>
               </div>
             ))}
