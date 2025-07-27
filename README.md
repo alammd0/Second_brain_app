@@ -1,3 +1,7 @@
+# SndBrain
+
+A web application to store and manage your second brain, including documents, links, tweets, and videos.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
