@@ -1,6 +1,15 @@
 # SndBrain
 
-A web application to store and manage your second brain, including documents, links, tweets, and videos.
+SndBrain is a full-stack web application designed to be your personal digital knowledge base, or "second brain". It allows you to securely store, organize, and manage various types of content, including documents, web links, Twitter posts, and YouTube videos. With user authentication, content management, and sharing capabilities, SndBrain provides a centralized hub for all your important information.
+
+## Key Features
+
+- **Secure User Authentication:** Sign up, log in, and manage your account with password reset functionality.
+- **Content Management:** Easily add, update, and delete various content types.
+- **Organize with Tags:** Categorize your content with tags for easy filtering and retrieval.
+- **Supported Content:** Store documents, save web links, embed tweets, and keep track of videos.
+- **Shareable Links:** Create public links to share your content with others.
+- **Dashboard View:** A central dashboard to view and manage all your saved content.
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
