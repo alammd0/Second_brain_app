@@ -5,10 +5,12 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Spinner from "./Spinner";
 
 export default function AuthForm({ type }: authProps) {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const [userData, setUserData] = useState<User>({
     name: "",
@@ -24,39 +26,45 @@ export default function AuthForm({ type }: authProps) {
     });
   };
 
-  const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-    if(type == "login"){
-        const response = await login(userData);
+    if (type == "login") {
+      setLoading(true);
+      const response = await login(userData);
+      if (!response.data) {
+        toast.error(response.message);
+        setLoading(false);
+        return;
+      }
+      toast.success(response.message);
+      localStorage.setItem("token", response.data.token);
+      router.push("/dashboard");
+      setLoading(false);
+    } else {
+      setLoading(true);
+      const response = await signup(userData);
+      if (!response.data) {
+        toast.error(response.message);
+        setLoading(false);
+        return;
+      }
 
-        if(!response.data){
-            toast.error(response.message);
-            return;
-        }
-        toast.success(response.message);
-        localStorage.setItem("token", response.data.token);
-        router.push("/dashboard");
-    }
-    else{
-        console.log(userData);
-        const response = await signup(userData);
-
-        if(!response.data){
-            toast.error(response.message);
-            return;
-        }
-
-        toast.success(response.message);
-        router.push("/login");
+      toast.success(response.message);
+      router.push("/login");
+      setLoading(false);
     }
 
     setUserData({
-        name: "",
-        username: "",
-        email: "",
-        password: ""
-    })
+      name: "",
+      username: "",
+      email: "",
+      password: "",
+    });
+  };
+
+  if(loading){
+    return <Spinner />
   }
 
   return (
@@ -68,7 +76,7 @@ export default function AuthForm({ type }: authProps) {
             : "Create a New Account"}
         </h1>
 
-        <form  onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {type == "signup" && (
             <div className="flex flex-col gap-2">
               <label className="text-sm" htmlFor="name">
@@ -184,7 +192,20 @@ export default function AuthForm({ type }: authProps) {
             </div>
           </div>
 
-          <button className="px-4 py-2 rounded-md bg-gray-500 text-white hover:bg-gray-700 transition duration-100 cursor-pointer" type="submit">{type == "login" ? "Login" : "Sign Up"}</button>
+          {type == "login" && (
+            <Link href="/send-email-with-token">
+              <p className="text-right text-sm text-gray-500">
+                Forgot Password?
+              </p>
+            </Link>
+          )}
+
+          <button
+            className="px-4 py-2 rounded-md bg-gray-500 text-white hover:bg-gray-700 transition duration-100 cursor-pointer"
+            type="submit"
+          >
+            {type == "login" ? "Login" : "Sign Up"}
+          </button>
         </form>
 
         <Link href={type == "login" ? "/signup" : "/login"}>

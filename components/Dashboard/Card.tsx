@@ -1,11 +1,6 @@
 import { Content } from "@/types/types";
 
 export default function Card({ content, }: { content: Content }) {
-    
-  console.log(content)
-
-
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 mb-10">
       <div className="flex items-center justify-between">

@@ -2,7 +2,7 @@
 "use client";
 
 
-import { Home, X, FileText, ExternalLink, Hash, Video } from "lucide-react";
+import { Home, X, FileText, Hash, Video } from "lucide-react";
 import Link from "next/link";
 import WebsiteIcons from "../icons/WebsiteIcons";
 import { usePathname } from "next/navigation";
@@ -14,13 +14,11 @@ const navItems  = [
   { name: "Tweets", href: "/dashboard/tweets", icon: X },
   { name: "Videos", href: "/dashboard/videos", icon : Video },
   { name: "Documents", href: "/dashboard/documents", icon: FileText },
-  { name: "Links", href: "/dashboard/links", icon: ExternalLink },
   { name: "Tags", href: "/dashboard/tags", icon: Hash },
 ];
 
 export default function Sidebar() {
   const router = useRouter();
-
   const pathName = usePathname();
 
   const logoutHandler = async () => {

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import TwitterEmbed from "../Dashboard/TwitterEmbed";
 import YoutubeEmbed from "../Dashboard/YoutubeEmbed";
+import Spinner from "../Spinner";
 
 export default function Share() {
   const sharelink = usePathname().split("/").pop();
@@ -35,7 +36,7 @@ export default function Share() {
   }
 
   if (!content) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   const renderEmbed = (content: ContentFetchResponse) => {
@@ -60,7 +61,7 @@ export default function Share() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen font-OpenSans">
+    <div className="flex flex-col items-center justify-center min-h-screen font-OpenSans pt-10 pb-10">
       <div className="bg-gray-50 rounded-lg p-4 flex flex-col gap-2 shadow-md shadow-gray-300 border border-gray-200">
         <div className="flex items-center justify-between">
           <p className="text-xl font-bold font-OpenSans">{content.title}</p>

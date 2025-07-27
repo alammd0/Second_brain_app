@@ -30,3 +30,7 @@ export interface ContentFetchResponse {
     contentType : string;
     tags : {name : string}[];
 }
+
+export type Tag = {
+  name: string;
+}

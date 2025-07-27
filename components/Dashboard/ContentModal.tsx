@@ -4,6 +4,7 @@ import { CreateContent } from "@/lib/api/content";
 import { useState } from "react"
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Spinner from "../Spinner";
 
 
 export default function ContentModal({ closeModal }: { closeModal: () => void }) {
@@ -15,6 +16,8 @@ export default function ContentModal({ closeModal }: { closeModal: () => void })
         url: "",
         contentType : "Document"
     });
+
+    const [loading, setLoading] = useState(false);
 
     const changeHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setContent({
@@ -29,28 +32,38 @@ export default function ContentModal({ closeModal }: { closeModal: () => void })
         e.preventDefault();
 
         try{
+            setLoading(true);
             const contentData = {
                 ...content,
                 tags : typeof content.tags === "string"
                 ? content.tags.split(",").map(tag => tag.trim())
                 : content.tags
-            }; 
-            
+            };
             const response = await CreateContent(contentData);
             
             if(!response){
                 toast.error(response.message);
+                setLoading(false);
                 return;
             }
 
             toast.success(response.message);
             router.push("/dashboard");
+            setLoading(false);
             closeModal();
         }
         catch(error){
            console.error(error);
            toast.error("Something went wrong, please try again");
         }
+    }
+
+    if(loading){
+        return (
+            <div className="fixed inset-0 bg-gray-500/65 bg-opacity-10 flex items-center justify-center z-10">
+                <Spinner />
+            </div>
+        )
     }
 
     return (

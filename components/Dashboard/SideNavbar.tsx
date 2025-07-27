@@ -12,7 +12,6 @@ export default function SideNavbar({ text }: { text: string }) {
     setContentModal(true);
   }
 
-
   const closeModal = () => {
     setContentModal(false);
   }

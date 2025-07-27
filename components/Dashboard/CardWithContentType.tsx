@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import TwitterEmbed from "./TwitterEmbed";
 import YoutubeEmbed from "./YoutubeEmbed";
 import SideNavbar from "./SideNavbar";
+import Spinner from "../Spinner";
 
 export default function CardWithContentType({
   contentType,
@@ -16,16 +17,20 @@ export default function CardWithContentType({
   const [contents, setContents] = useState<ContentFetchResponse[]>([]);
   const [shareLinks, setShareLinks] = useState<Record<string, string>>({});
   const [loadingShare, setLoadingShare] = useState<Record<string, boolean>>({});
+  const [loading, setLoading] = useState(false);
 
   const fetchContents = async () => {
     try {
+      setLoading(true);
       const response = await GetContents();
       if (!response) {
         toast.error(response.message);
+        setLoading(false);
         return;
       }
       setContents(response.data);
       toast.success(response.message);
+      setLoading(false);
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong, please try again");
@@ -77,9 +82,13 @@ export default function CardWithContentType({
   };
 
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   if (contents.length === 0) {
     return (
-      <div className="text-center text-2xl font-OpenSans">
+      <div className="text-center text-2xl font-OpenSans flex justify-center items-center h-screen">
         No {contentType} content found
       </div>
     );
@@ -102,21 +111,25 @@ export default function CardWithContentType({
                   <p>{content.title}</p>
 
                   <div className="flex gap-2">
-                    <button onClick={() => handleShare((content).id)}>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        className="size-4 cursor-pointer"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
-                        />
-                      </svg>
+                    <button onClick={() => handleShare(content.id)} disabled={loadingShare[content.id]}>
+                      {loadingShare[content.id] ? (
+                        <div className="small-spinner"></div>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="currentColor"
+                          className="size-4 cursor-pointer"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
+                          />
+                        </svg>
+                      )}
                     </button>
 
                     
@@ -135,19 +148,19 @@ export default function CardWithContentType({
 
                     <p>
                       <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        className="size-4 cursor-pointer"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                        />
-                      </svg>
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="currentColor"
+                          className="size-4 cursor-pointer"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                          />
+                        </svg>
                     </p>
                   </div>
                 </div>
@@ -158,7 +171,7 @@ export default function CardWithContentType({
                   <p>{content.description}</p>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                     {
                         content.tags.map((tag, index) => {
                             return (

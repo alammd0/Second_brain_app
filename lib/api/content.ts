@@ -46,3 +46,8 @@ export const GetShareLink = async (sharelink : string | undefined) => {
     const response = await fetch(`/api/content/get-content-link?sharelink=${sharelink}`);
     return response.json();
 }
+
+export const GetTags = async () => {
+    const response = await fetch("/api/content/get-tags");
+    return response.json();
+}
